@@ -1,0 +1,49 @@
+
+# There are various types of Cookies.
+I'm lmplementing: Session Cookies
+
+
+
+////////////////////////////////////////////////////////////////
+
+1. Cookies:
+  Server creates an userId 
+  (of the user that accessed the server)
+  and, stores some user activity against the userId,
+  on the user's browser.
+
+
+2. Session:
+  A period of Time, till the browser interacts - with the server.
+
+Login  = Authentication Starts --> Session Auth Cookies created.
+Logout = Authentication Ends   --> Session Auth Cookies destroyed.
+
+////////////////////////////////////////////////////////////////
+
+
+
+
+Authentication:
+
+express-session
+passport                  --> Authentication package for Node.js
+passport-local-mongoose
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -58,11 +58,11 @@ app.get('/', (req, res) => {
   res.render('home')
 })
 
-app.get('/register', (req, res) => {
+app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register')
 })
 
-app.get('/login', (req, res) => {
+app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login')
 })
 
@@ -74,14 +74,20 @@ app.get('/login', (req, res) => {
 // })
 
 
-app.get('/secrets', checkAuthentication, (req, res) => {
+app.get('/secrets', checkAuthenticated, (req, res) => {
   res.render('secrets')
 })
 
-function checkAuthentication (req, res, next) {
+function checkAuthenticated (req, res, next) {
   if(req.isAuthenticated())
     return next()
   res.redirect('/login')
+}
+
+function checkNotAuthenticated (req, res, next) {
+  if(req.isAuthenticated())
+    return res.redirect('/secrets')
+  next()
 }
 
 
@@ -263,7 +269,7 @@ function bcryptAuth () {
 //////////////////////  Passport Authentication - using Array /////////////////////
 
 function passportAuth () {
-  app.post('/register', (req, res) => {
+  app.post('/register', checkNotAuthenticated, (req, res) => {
     const username = _.toLower(req.body.username)
     const email = _.toLower(req.body.email)
     let password = req.body.password
@@ -292,7 +298,7 @@ function passportAuth () {
     else {res.send('<h2>Email already used. <a href="/register">Register</a></h2>')}
   })
   
-  app.post('/login', passport.authenticate('local', {
+  app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/secrets',
     failureRedirect: '/login',
     failureFlash: true

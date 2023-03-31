@@ -66,9 +66,27 @@ app.get('/login', (req, res) => {
   res.render('login')
 })
 
-app.get('/secrets', (req, res) => {
+// app.get('/secrets', (req, res) => {
+//   if(req.isAuthenticated())
+//     res.render('secrets')
+//   else
+//     res.redirect('/login')
+// })
+
+
+app.get('/secrets', checkAuthentication, (req, res) => {
   res.render('secrets')
 })
+
+function checkAuthentication (req, res, next) {
+  if(req.isAuthenticated())
+    return next()
+  res.redirect('/login')
+}
+
+
+
+
 
 
 

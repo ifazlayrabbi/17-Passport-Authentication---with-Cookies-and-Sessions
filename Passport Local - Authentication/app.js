@@ -11,6 +11,8 @@ require('dotenv').config()
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 const _ = require('lodash')
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -64,6 +66,14 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login')
+})
+
+app.delete('/logout', (req, res, next) => {
+  req.logout(err => {
+    if(err)
+      return next(err)
+    res.redirect('/')
+  })
 })
 
 // app.get('/secrets', (req, res) => {

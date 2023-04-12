@@ -1,4 +1,4 @@
-# Passport Authentication - with Cookies and Sessions
+# Passport Local Authentication - using Array
 
 Passport Local Authentication - using Array
 -------------------------------------------

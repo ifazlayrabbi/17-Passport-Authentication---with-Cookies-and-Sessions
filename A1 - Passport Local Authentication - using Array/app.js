@@ -174,8 +174,8 @@ passportAuth()
 
 
 
-
-//////////////////////  Security: Level 1 - Match Password  //////////////////
+// (Kept for Reference)
+///////////////////////  Security: Level 1 - Match Password  //////////////////
 
 function matchPasswordAuth () {
   app.post('/register', (req, res) => {
@@ -252,7 +252,8 @@ function matchPasswordAuth () {
 
 
 
-//////////////////////  Security: Level 4 - bcrypt Authentication  /////////////////////////////
+// (Kept for Reference)
+///////////////////////  Security: Level 4 - bcrypt Authentication  /////////////////////////////
 
 function bcryptAuth () {
   app.post('/register', async (req, res) => {

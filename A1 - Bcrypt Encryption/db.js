@@ -10,15 +10,12 @@ mongoose.connect('mongodb+srv://'+process.env.user+':'+process.env.pass+'@cluste
 
 
 const userSchema = mongoose.Schema({
-  username: {
-    type: String,
-    required: [true, 'Username missing !'],
-    unique: true
-  },
   email: {
     type: String,
     required: [true, 'Email missing !'],
-    unique: true
+    unique: true,
+    index: true,
+    sparse: true
   },
   password: {
     type: String,

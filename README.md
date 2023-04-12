@@ -1,4 +1,4 @@
-# Passport Authentication using Cookies and Sessions
+# Passport Authentication with Cookies and Sessions
 
 Passport Authentication
 ---------------------------

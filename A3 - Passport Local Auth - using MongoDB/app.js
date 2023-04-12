@@ -123,6 +123,71 @@ function passportAuth () {
     const password = req.body.password
 
     if(email && password){
+
+      User.register({username: email}, password, (err, user) => {
+        if(err){
+          console.log(err)
+          res.redirect('/register')
+        }
+        passport.authenticate('local')(req, res, () => {
+          console.log('New user registered.')
+          res.redirect('/secrets')
+        })
+      })
+      
+    }
+    else{
+      console.log('Email or password missing!')
+      res.redirect('/register')
+    }
+
+  })
+
+  app.post('/login', (req, res) => {
+    const email = _.toLower(req.body.email)
+    const password = req.body.password
+
+    const user = new User({
+      username: email,
+      password: password
+    })
+
+    req.login(user, err => {
+      if(err){
+        console.log(err)
+        res.redirect('/login')
+      }
+      console.log('Successfully logged in.')
+      res.redirect('/secrets')
+    })
+
+  })
+
+}
+passportAuth()
+
+//////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////  Passport Authentication 2 - using MongoDB /////////////////////
+
+function passportAuth2 () {
+
+  app.post('/register', async (req, res) => {
+    const email = _.toLower(req.body.email)
+    const password = req.body.password
+
+    if(email && password){
       try{
         const registerUser = await User.register({username: email}, password)
         if(registerUser){
@@ -150,7 +215,7 @@ function passportAuth () {
     failureFlash: true
   }))
 }
-passportAuth()
+// passportAuth2()
 
 //////////////////////////////////////////////////////////////////////
 

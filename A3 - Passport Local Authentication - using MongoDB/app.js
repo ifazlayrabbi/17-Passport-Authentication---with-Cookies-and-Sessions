@@ -99,7 +99,6 @@ function checkNotAuthenticated (req, res, next) {
   next()
 }
 
-
 app.get('/submit', (req, res) => {
   res.render('submit')
 })
@@ -115,11 +114,58 @@ app.post('/submit', (req, res) => {
 
 
 
+//////////////////////  Passport Authentication - using MongoDB /////////////////////
+
+function passportAuth () {
+
+  app.post('/register', async (req, res) => {
+    const email = _.toLower(req.body.email)
+    const password = req.body.password
+
+    if(email && password){
+      try{
+        const registerUser = await User.register({username: email}, password)
+        if(registerUser){
+          passport.authenticate('local')(req, res, function(){
+            console.log('New user registered.')
+            res.redirect('/secrets')
+          })
+        } else{
+          res.redirect('/register')
+        }
+      } catch (err) {
+        console.log(err)
+        res.redirect('/register')
+      }
+    }
+    else{
+      console.log('Email or password missing!')
+      res.redirect('/register')
+    }
+  })
+  
+  app.post('/login', checkNotAuthenticated, passport.authenticate('local', { 
+    successRedirect: '/secrets',
+    failureRedirect: '/login',
+    failureFlash: true
+  }))
+}
+passportAuth()
+
+//////////////////////////////////////////////////////////////////////
 
 
 
 
-//////////////////////  Security: Level 1 - Match Password  //////////////////
+
+
+
+
+
+
+
+// (Kept for Reference)
+///////////////////////  Security: Level 1 - Match Password  //////////////////
 
 function matchPasswordAuth () {
   app.post('/register', (req, res) => {
@@ -195,8 +241,8 @@ function matchPasswordAuth () {
 
 
 
-
-//////////////////////  Security: Level 4 - bcrypt Authentication  /////////////////////////////
+// (Kept for Reference)
+///////////////////////  Security: Level 4 - bcrypt Authentication  /////////////////////////////
 
 function bcryptAuth () {
   app.post('/register', async (req, res) => {
@@ -272,59 +318,6 @@ function bcryptAuth () {
 // bcryptAuth ()
 
 ////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////  Passport Authentication - using MongoDB /////////////////////
-
-function passportAuth () {
-
-  app.post('/register', async (req, res) => {
-    const email = _.toLower(req.body.email)
-    const password = req.body.password
-
-    if(email && password){
-      try{
-        const registerUser = await User.register({username: email}, password)
-        if(registerUser){
-          passport.authenticate('local')(req, res, function(){
-            console.log('New user registered.')
-            res.redirect('/secrets')
-          })
-        } else{
-          res.redirect('/register')
-        }
-      } catch (err) {
-        console.log(err)
-        res.redirect('/register')
-      }
-    }
-    else{
-      console.log('Email or password missing!')
-      res.redirect('/register')
-    }
-  })
-  
-  app.post('/login', checkNotAuthenticated, passport.authenticate('local', { 
-    successRedirect: '/secrets',
-    failureRedirect: '/login',
-    failureFlash: true
-  }))
-}
-passportAuth()
-
-//////////////////////////////////////////////////////////////////////
 
 
 

@@ -67,21 +67,12 @@ app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login')
 })
 
-app.delete('/logout', (req, res, next) => {
-  req.logout(err => {
-    if(err)
-      return next(err)
-    res.redirect('/login')
-  })
-})
-
 // app.get('/secrets', (req, res) => {
 //   if(req.isAuthenticated())
 //     res.render('secrets')
 //   else
 //     res.redirect('/login')
 // })
-
 
 app.get('/secrets', checkAuthenticated, (req, res) => {
   res.render('secrets')
@@ -98,6 +89,19 @@ function checkNotAuthenticated (req, res, next) {
     return res.redirect('/secrets')
   next()
 }
+
+// app.delete('/logout', (req, res, next) => {
+//   req.logout(err => {
+//     if(err)
+//       return next(err)
+//     res.redirect('/login')
+//   })
+// })
+
+app.delete('/logout', (req, res, next) => {
+  req.logout()
+  res.redirect('/login')
+})
 
 app.get('/submit', (req, res) => {
   res.render('submit')

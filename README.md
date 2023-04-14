@@ -1,10 +1,9 @@
-# Passport Authentication with Cookies and Sessions
+# Passport Local Authentication - using Array
 
-Passport Authentication
----------------------------
+Passport Local Authentication - using Array
+-------------------------------------------
 - passport
-- express-session
-- mongodb
+- passport-local
 
 
 

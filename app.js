@@ -122,19 +122,26 @@ function passportAuth () {
     const password = req.body.password
 
     if(email && password){
-      try{
-        const registerUser = await User.register({username: email}, password)
-        if(registerUser){
-          passport.authenticate('local')(req, res, function(){
-            console.log('New user registered.')
-            res.redirect('/secrets')
-          })
-        } else{
+      const found = await User.find({email: email})
+      if(found != ''){
+        console.log('Already Registered')
+        res.send('<h2>Already Registered <a href="/login">Login</a></h2>')
+      }
+      else{
+        try{
+          const registerUser = await User.register({username: email}, password)
+          if(registerUser){
+            passport.authenticate('local')(req, res, function(){
+              console.log('New user registered.')
+              res.redirect('/secrets')
+            })
+          } else{
+            res.redirect('/register')
+          }
+        } catch (err) {
+          console.log(err)
           res.redirect('/register')
         }
-      } catch (err) {
-        console.log(err)
-        res.redirect('/register')
       }
     }
     else{
